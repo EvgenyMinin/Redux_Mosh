@@ -1,7 +1,7 @@
 let lastId = 0;
 const initialState = [];
 
-function reducer(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
