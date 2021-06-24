@@ -14,7 +14,7 @@ export default function reducer(state = initialState, action) {
           resolve: false,
         },
       ];
-    case "bugAdded":
+    case "bugRemoved":
       return state.filter((bug) => bug.id !== payload.id);
     default:
       return state;
