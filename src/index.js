@@ -1,14 +1,18 @@
-import store from "./store";
-import { bugAdded, bugRemoved, bugResolved } from "./actions";
+import store from "./customStore";
+import * as actions from "./actions";
 
-store.dispatch(bugAdded("Bug 1"));
+store.subscribe(() => {
+  console.log("Store changed!");
+});
+
+store.dispatch(actions.bugAdded("Bug 1"));
 
 console.log(store.getState()); // [{id: 1, description: 'Bug 1', resolved: false}]
 
-store.dispatch(bugResolved(1));
+store.dispatch(actions.bugResolved(1));
 
 console.log(store.getState()); // [{id: 1, description: 'Bug 1', resolved: true}]
 
-store.dispatch(bugRemoved(1));
+store.dispatch(actions.bugRemoved(1));
 
 console.log(store.getState()); // []
