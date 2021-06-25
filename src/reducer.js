@@ -13,9 +13,13 @@ export default function reducer(state = initialState, action) {
         {
           id: ++lastId,
           description: payload.description,
-          resolve: false,
+          resolved: false,
         },
       ];
+    case actions.BUG_RESOLVED:
+      return state.map((bug) =>
+        bug.id !== payload.id ? bug : { ...bug, resolved: true }
+      );
     case actions.BUG_REMOVED:
       return state.filter((bug) => bug.id !== payload.id);
     default:
