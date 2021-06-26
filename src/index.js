@@ -17,6 +17,4 @@ store.dispatch(actions.bugResolved({ id: 1 }));
 
 console.log(store.getState()); // [{id: 1, description: 'Bug 1', resolved: true}]
 
-store.dispatch(actions.bugRemoved({ id: 1 }));
-
-console.log(store.getState()); // []
+console.log(store.getState());
