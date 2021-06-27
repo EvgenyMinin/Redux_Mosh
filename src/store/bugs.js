@@ -2,7 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
 let lastId = 0;
-const initialState = [];
+const initialState = {
+  list: [],
+  loading: false,
+  lastFetch: null,
+};
 
 const slice = createSlice({
   name: "bugs",
@@ -10,7 +14,7 @@ const slice = createSlice({
   reducers: {
     // actions => actions handler
     bugAdded: (bugs, action) => {
-      bugs.push({
+      bugs.list.push({
         id: ++lastId,
         description: action.payload.description,
         resolved: false,
@@ -19,13 +23,13 @@ const slice = createSlice({
 
     bugToUserAssigned: (bugs, action) => {
       const { bugId, userId } = action.payload;
-      const index = bugs.findIndex((bug) => bug.id === bugId);
-      bugs[index].userId = userId;
+      const index = bugs.list.findIndex((bug) => bug.id === bugId);
+      bugs.list[index].userId = userId;
     },
 
     bugResolved: (bugs, action) => {
-      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
-      bugs[index].resolved = true;
+      const index = bugs.list.findIndex((bug) => bug.id === action.payload.id);
+      bugs.list[index].resolved = true;
     },
   },
 });
