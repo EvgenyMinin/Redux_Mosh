@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
-import { apiCallBegan } from "./api";
+import { apiCallBegan, apiCallSuccess } from "./api";
 
 let lastId = 0;
 const initialState = {
@@ -14,9 +14,19 @@ const slice = createSlice({
   initialState,
   reducers: {
     // actions => actions handler
+    bugsRequested: (bugs, action) => {
+      bugs.loading = true;
+    },
+
+    bugsRequestFailed: (bugs, action) => {
+      bugs.loading = false;
+    },
+
     bugsReceived: (bugs, action) => {
       bugs.list = action.payload;
+      bugs.loading = false;
     },
+
     bugAdded: (bugs, action) => {
       bugs.list.push({
         id: ++lastId,
@@ -42,6 +52,8 @@ export const {
   bugAdded,
   bugResolved,
   bugToUserAssigned,
+  bugsRequested,
+  bugsRequestFailed,
   bugsReceived,
 } = slice.actions;
 export default slice.reducer;
@@ -51,7 +63,9 @@ const url = "/bugs";
 export const loadBugs = () =>
   apiCallBegan({
     url,
+    onStart: bugsRequested.type,
     onSuccess: bugsReceived.type,
+    onError: bugsRequestFailed.type,
   });
 
 // selector
