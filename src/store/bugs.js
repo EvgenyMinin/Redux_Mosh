@@ -2,9 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import moment from "moment";
 
-import { apiCallBegan, apiCallSuccess } from "./api";
+import { apiCallBegan } from "./api";
 
-let lastId = 0;
 const initialState = {
   list: [],
   loading: false,
@@ -31,11 +30,7 @@ const slice = createSlice({
     },
 
     bugAdded: (bugs, action) => {
-      bugs.list.push({
-        id: ++lastId,
-        description: action.payload.description,
-        resolved: false,
-      });
+      bugs.list.push(action.payload);
     },
 
     bugToUserAssigned: (bugs, action) => {
@@ -79,6 +74,14 @@ export const loadBugs = () => (dispatch, getState) => {
     })
   );
 };
+
+export const addBug = (bug) =>
+  apiCallBegan({
+    url,
+    method: "post",
+    data: bug,
+    onSuccess: bugAdded.type,
+  });
 
 // selector
 export const unresolvedBugsSelector = createSelector(
